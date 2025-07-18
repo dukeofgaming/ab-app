@@ -1,5 +1,11 @@
 # ab-app
 
+## 0.1.1-dev.2
+
+### Patch Changes
+
+- 594cda0: Fixing branch typo
+
 ## 0.1.1-dev.1
 
 ### Patch Changes
