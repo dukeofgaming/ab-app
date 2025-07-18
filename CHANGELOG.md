@@ -1,5 +1,11 @@
 # ab-app
 
+## 0.1.1-dev.1
+
+### Patch Changes
+
+- 354f5de: Exiting pre-release mode if main
+
 ## 0.1.1-dev.0
 
 ### Patch Changes
