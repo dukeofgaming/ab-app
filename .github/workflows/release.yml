@@ -53,6 +53,15 @@ jobs:
           else
             echo "Already in pre mode, skipping changeset pre enter dev"
           fi
+      
+      - name: Exit Pre-release Mode (main)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          if [ -f .changeset/pre.json ]; then
+            npx changeset pre exit
+          else
+            echo "Not in pre mode, skipping changeset pre exit"
+          fi
 
       - name: Create Release Pull Request
         uses: changesets/action@v1
