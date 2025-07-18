@@ -45,6 +45,15 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Enter Pre-release Mode (dev)
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          if [ ! -f .changeset/pre.json ]; then
+            npx changeset pre enter dev
+          else
+            echo "Already in pre mode, skipping changeset pre enter dev"
+          fi
+
       - name: Create Release Pull Request
         uses: changesets/action@v1
         env:
