@@ -1,5 +1,11 @@
 # ab-app
 
+## 0.1.1-dev.3
+
+### Patch Changes
+
+- efe3d83: Adding fix for missing fetch to modify changeset-release/main branch
+
 ## 0.1.1-dev.2
 
 ### Patch Changes
