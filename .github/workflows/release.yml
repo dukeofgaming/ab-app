@@ -42,8 +42,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
+      
 
       - name: Enter Pre-release Mode (dev)
         if: github.ref == 'refs/heads/develop'
@@ -53,17 +52,30 @@ jobs:
           else
             echo "Already in pre mode, skipping changeset pre enter dev"
           fi
-      
-      - name: Exit Pre-release Mode (main)
-        if: github.ref == 'refs/heads/main'
-        run: |
-          if [ -f .changeset/pre.json ]; then
-            npx changeset pre exit
-          else
-            echo "Not in pre mode, skipping changeset pre exit"
-          fi
 
       - name: Create Release Pull Request
+        id: create_release_pr
         uses: changesets/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Exit Pre-release Mode in changeset/release-main
+        if: github.ref == 'refs/heads/main' 
+        # && steps.create_release_pr.outputs.hasChangesets == 'true'
+        run: |
+          if [ -f .changeset/pre.json ]; then
+          
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            
+            git checkout -b changeset-release/main origin/changeset-release/main
+
+            npx changeset pre exit
+
+            git add .
+            git commit -m "Exiting pre-release mode" || echo "No changes to commit" >> $GITHUB_STEP_SUMMARY
+
+            git push origin changeset/release-main
+          else
+            echo "Not in pre mode, skipping changeset pre exit"
+          fi
