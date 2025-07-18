@@ -68,8 +68,8 @@ jobs:
             git config --global user.name "github-actions[bot]"
             git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
             
-            git checkout -b changeset/release-main origin/changeset/release-main
-            
+            git checkout -b changeset-release/main origin/changeset-release/main
+
             npx changeset pre exit
 
             git add .
