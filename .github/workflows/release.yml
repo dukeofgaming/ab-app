@@ -64,18 +64,22 @@ jobs:
         # && steps.create_release_pr.outputs.hasChangesets == 'true'
         run: |
           if [ -f .changeset/pre.json ]; then
-          
             git config --global user.name "github-actions[bot]"
             git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            
-            git checkout -b changeset-release/main origin/changeset-release/main
+
+            git fetch origin changeset-release/main:refs/remotes/origin/changeset-release/main || true
+
+            if git show-ref --verify --quiet refs/remotes/origin/changeset-release/main; then
+              git checkout -b changeset-release/main origin/changeset-release/main
+            else
+              git checkout -b changeset-release/main
+            fi
 
             npx changeset pre exit
-
+            
             git add .
             git commit -m "Exiting pre-release mode" || echo "No changes to commit" >> $GITHUB_STEP_SUMMARY
-
-            git push origin changeset/release-main
+            git push origin changeset-release/main
           else
             echo "Not in pre mode, skipping changeset pre exit"
           fi
